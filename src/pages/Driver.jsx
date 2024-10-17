@@ -33,7 +33,7 @@ function Driver() {
   return (
     <div>
       <Flex className="mb-4">
-        <Button>New Transporter</Button>
+        <Button>New Driver</Button>
       </Flex>
       <DataTable
         shadow="lg"

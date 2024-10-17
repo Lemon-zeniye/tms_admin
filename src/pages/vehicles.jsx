@@ -33,7 +33,7 @@ function Vehicles() {
   return (
     <div>
       <Flex className="mb-4">
-        <Button>New Transporter</Button>
+        <Button>New Vehicle</Button>
       </Flex>
       <DataTable
         shadow="lg"
