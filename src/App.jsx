@@ -15,6 +15,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import Transporter from "./pages/Transporter";
 import Driver from "./pages/Driver";
 import Vehicles from "./pages/Vehicles";
+import AddTransporter from "./pages/AddTransporter";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
         <Route path="/products" element={<ProductPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transporters" element={<Transporter />} />
+        <Route path="/addTransporter" element={<AddTransporter />} />
         <Route path="/drivers" element={<Driver />} />
         <Route path="/vehicles" element={<Vehicles />} />
       </Route>

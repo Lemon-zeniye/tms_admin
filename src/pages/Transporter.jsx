@@ -1,8 +1,15 @@
 import React from "react";
 import { DataTable } from "mantine-datatable";
 import { Box, Button, Flex } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 
 function Transporter() {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/addTransporter");
+  };
+
   const companies = [
     {
       id: "1",
@@ -33,7 +40,7 @@ function Transporter() {
   return (
     <div>
       <Flex className="mb-4">
-        <Button>New Transporter</Button>
+        <Button onClick={{ handleClick }}>New Transporter</Button>
       </Flex>
       <DataTable
         shadow="lg"
