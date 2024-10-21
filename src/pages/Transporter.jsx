@@ -1,6 +1,7 @@
-import React from "react";
+import { useState } from "react";
+
 import { DataTable } from "mantine-datatable";
-import { Box, Button, Flex } from "@mantine/core";
+import { Box, Button, Flex, Pagination } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 
 function Transporter() {
@@ -36,6 +37,8 @@ function Transporter() {
       status: "Inactive",
     },
   ];
+
+  const [activePage, setPage] = useState(1);
 
   return (
     <div>
@@ -76,6 +79,7 @@ function Transporter() {
         ]}
         records={companies}
       />
+      <Pagination value={activePage} onChange={setPage} total={10} className="float-right mt-10"/>
     </div>
   );
 }

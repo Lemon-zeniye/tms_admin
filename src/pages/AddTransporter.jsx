@@ -25,7 +25,7 @@ function AddTransporter() {
       <h2 className="text-lg font-bold mb-5">New Transporter</h2>
       <div className="mb-6">
         <p className="text-md font-medium mb-2">Company Detail</p>
-        <Flex className="gap-20">
+        <Flex className="gap-20 grow">
           <TextInput
             label="Company Name"
             placeholder="Enter Company Name"
@@ -44,9 +44,10 @@ function AddTransporter() {
           <DateInput label="Date" placeholder="Date" />
         </Flex>
       </div>
+
       <div className="mb-6">
         <p className="text-md font-medium mb-2">Operational Detail</p>
-        <Flex className="gap-20">
+        <Flex className="justify-first gap-20">
           <TextInput
             label="Operating Areas"
             placeholder="Operating Areas"
