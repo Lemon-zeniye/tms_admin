@@ -1,6 +1,8 @@
 import React from "react";
 import { DataTable } from "mantine-datatable";
-import { Box, Button, Flex } from "@mantine/core";
+import { Box, Button } from "@mantine/core";
+import { TextInput, Flex, NumberInput } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 
 function Vehicles() {
   const companies = [
@@ -28,13 +30,68 @@ function Vehicles() {
       },
       status: "Inactive",
     },
+    {
+      id: "3",
+      company_name: "Transport Co2.",
+      operational_area: "North America",
+      fleet_size: 50,
+      contact_person: {
+        name: "John Doe",
+        email: "john.doe@example.com",
+        phone_number: "+1234567890",
+      },
+      status: "Active",
+    },
+    {
+      id: "4",
+      company_name: "Transport Co.",
+      operational_area: "North America",
+      fleet_size: 50,
+      contact_person: {
+        name: "John Doe",
+        email: "john.doe@example.com",
+        phone_number: "+1234567890",
+      },
+      status: "Active",
+    },
   ];
 
   return (
     <div>
-      <Flex className="mb-4">
-        <Button>New Vehicle</Button>
+      {/* <Flex className="mb-4">
+        <Button>New Driver</Button>
+      </Flex> */}
+
+      <h2>Vehicles Information</h2>
+
+      <Flex className="gap-20 mb-10">
+        <TextInput label="Vehicle Type" required />
+        <TextInput label="License Number" required></TextInput>
+        <TextInput label="Model" required></TextInput>
+        <TextInput label="Insurance Status" required></TextInput>
+        
       </Flex>
+      <Flex className="gap-20 mb-10">
+        <TextInput label="VIN" required></TextInput>
+        <TextInput label="Status" required></TextInput>
+      </Flex>
+    
+      
+      <h2>Owner Information</h2>
+      <Flex className="gap-20">
+        <TextInput label="Phone Number" required />
+        <TextInput label="Email Address" required></TextInput>
+        <TextInput label="Address" required></TextInput>
+      </Flex>
+      <Flex className="gap-10 mb-16 mt-10  ">
+        <Button variant="filled" color="red">
+          CANCEL
+        </Button>
+        <Button variant="filled" color="teal">
+          SAVE
+        </Button>
+      </Flex>
+
       <DataTable
         shadow="lg"
         borderRadius="md"

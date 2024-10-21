@@ -15,8 +15,9 @@ import ErrorPage from "./pages/ErrorPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Transporter from "./pages/Transporter";
 import Driver from "./pages/Driver";
-import Vehicles from "./pages/vehicles";
+import Vehicles from "./pages/Vehicles";
 import AddTransporter from "./pages/AddTransporter";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
         <Route path="/login" element={<LoginPage />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
+      
     </>,
   ),
 );
