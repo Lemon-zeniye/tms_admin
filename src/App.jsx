@@ -12,7 +12,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import ProductPage from "./pages/ProductPage";
 import Dashboard from "./pages/Dashboard";
 import ErrorPage from "./pages/ErrorPage";
-import NotFoundPage from "./pages/NotFound~~Page";
+import NotFoundPage from "./pages/NotFoundPage";
 import Transporter from "./pages/Transporter";
 import Driver from "./pages/Driver";
 import Vehicles from "./pages/vehicles";
