@@ -14,7 +14,7 @@ import ErrorPage from "./pages/ErrorPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Transporter from "./pages/Transporter";
 import Driver from "./pages/Driver";
-import Vehicles from "./pages/Vehicles";
+import Vehicles from "./pages/vehicles";
 import AddTransporter from "./pages/AddTransporter";
 
 const router = createBrowserRouter(
