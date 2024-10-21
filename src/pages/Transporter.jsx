@@ -40,7 +40,7 @@ function Transporter() {
   return (
     <div>
       <Flex className="mb-4">
-        <Button onClick={{ handleClick }}>New Transporter</Button>
+        <Button onClick={handleClick}>New Transporter</Button>
       </Flex>
       <DataTable
         shadow="lg"

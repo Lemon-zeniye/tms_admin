@@ -3,6 +3,7 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
+  Routes,
 } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import MainLayout from "./layouts/MainLayout";
@@ -29,11 +30,9 @@ const router = createBrowserRouter(
         <Route path="/drivers" element={<Driver />} />
         <Route path="/vehicles" element={<Vehicles />} />
       </Route>
-
       <Route path="/" element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
       </Route>
-
       <Route path="*" element={<NotFoundPage />} />
     </>,
   ),
