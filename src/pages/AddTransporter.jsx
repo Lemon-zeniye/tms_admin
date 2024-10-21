@@ -1,48 +1,50 @@
-import { TextInput, Flex, NumberInput } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
+import {
+  TextInput,
+  Flex,
+  NumberInput,
+  Input,
+  InputBase,
+  Combobox,
+  useCombobox,
+} from "@mantine/core";
+import { DateInput, TimeInput } from "@mantine/dates";
 
 function AddTransporter() {
+  
   return (
     <>
-      <h3>New Transporter</h3>
-      <div>
-        <Flex justify="between">
-          <Flex direction="column" className="mr-28">
-            <label>Company Name</label>
-            <TextInput id="companyName" />
-          </Flex>
-          <Flex direction="column" className="mr-28">
-            <label>Business Registration Number</label>
-            <TextInput id="businessNumber" />
-          </Flex>
-          <Flex direction="column" className="mr-28">
-            <label>Tax Identification Number</label>
-            <TextInput id="taxId" />
-          </Flex>
-          <Flex direction="column">
-            <label>Date</label>
-            <DateInput id="date" placeholder="Date" />
-          </Flex>
+      <h2 className="text-lg font-bold mb-5">New Transporter</h2>
+      <div className="mb-10">
+        <p className="text-md font-bold mb-5">Company Detail</p>
+        <Flex className="justify-between">
+          <TextInput label="Company Name" placeholder="Enter Company Name" />
+          <TextInput
+            label="Business Registration Number"
+            placeholder="Enter BRN"
+          />
+          <TextInput
+            label="Tax Identification Number"
+            placeholder="Enter TIN"
+          />
+          <DateInput label="Date" placeholder="Date" />
         </Flex>
       </div>
 
-      <h4>Operational Details</h4>
       <div>
+        <p className="text-md font-bold mb-5">Operational Detail</p>
         <Flex className="mb-4" justify="between">
-          <Flex direction="column" className="mr-10">
-            <label>Operational Areas</label>
-            <TextInput id="companyName" />
+          <Flex>
+            <TextInput label="Operating Areas" placeholder="Operating Areas" />
           </Flex>
-          <Flex direction="column" className="mr-4">
-            <label>Fleet Size</label>
-            <NumberInput id="businessNumber" />
+          <Flex>
+            <NumberInput label="Fleet Size" />
           </Flex>
-          <Flex direction="column" className="mr-4">
-            <label>Tax Identification Number</label>
-            <TextInput id="taxId" />
+          <Flex>
+            <label className="mb-3">Tax Identification Number</label>
+            <TextInput label="" />
           </Flex>
-          <Flex direction="column">
-            <label>Date</label>
+          <Flex>
+            <label className="mb-3">Date</label>
             <DateInput id="date" placeholder="Date" />
           </Flex>
         </Flex>
