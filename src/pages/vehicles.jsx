@@ -1,60 +1,78 @@
 import React from "react";
 import { DataTable } from "mantine-datatable";
-import { Box, Button } from "@mantine/core";
+import { Box, Button, Select} from "@mantine/core";
 import { TextInput, Flex, NumberInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 
 function Vehicles() {
-  const companies = [
+  const vehicles = [
     {
       id: "1",
-      company_name: "Transport Co.",
-      operational_area: "North America",
-      fleet_size: 50,
-      contact_person: {
+      vehicle_type: "Truck",
+      license_plate: "ABC1234",
+      model: "Ford F-150",
+      vin: "1FTRX12W54NA12345",
+      status: "Active",
+      owner_contact: {
         name: "John Doe",
         email: "john.doe@example.com",
         phone_number: "+1234567890",
       },
-      status: "Active",
     },
     {
       id: "2",
-      company_name: "Logistics Solutions",
-      operational_area: "Europe",
-      fleet_size: 100,
-      contact_person: {
+      vehicle_type: "Van",
+      license_plate: "XYZ5678",
+      model: "Mercedes Sprinter",
+      vin: "WDB6312001B123456",
+      status: "Inactive",
+      owner_contact: {
         name: "Jane Smith",
         email: "jane.smith@example.com",
-        phone_number: "+9876543210",
+        phone_number: "+0987654321",
       },
-      status: "Inactive",
     },
     {
       id: "3",
-      company_name: "Transport Co2.",
-      operational_area: "North America",
-      fleet_size: 50,
-      contact_person: {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        phone_number: "+1234567890",
-      },
+      vehicle_type: "Sedan",
+      license_plate: "LMN9012",
+      model: "Toyota Camry",
+      vin: "4T1BF1FK0HU123456",
       status: "Active",
+      owner_contact: {
+        name: "Alice Johnson",
+        email: "alice.johnson@example.com",
+        phone_number: "+1122334455",
+      },
     },
     {
       id: "4",
-      company_name: "Transport Co.",
-      operational_area: "North America",
-      fleet_size: 50,
-      contact_person: {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        phone_number: "+1234567890",
-      },
+      vehicle_type: "SUV",
+      license_plate: "JKL3456",
+      model: "Honda CR-V",
+      vin: "5J6RW2H56FL123456",
       status: "Active",
+      owner_contact: {
+        name: "Bob Brown",
+        email: "bob.brown@example.com",
+        phone_number: "+2233445566",
+      },
+    },
+    {
+      id: "5",
+      vehicle_type: "Motorcycle",
+      license_plate: "GHI7890",
+      model: "Harley-Davidson Sportster",
+      vin: "1HD1CZ316KC123456",
+      status: "Inactive",
+      owner_contact: {
+        name: "Charlie White",
+        email: "charlie.white@example.com",
+        phone_number: "+3344556677",
+      },
     },
   ];
+  
 
   return (
     <div>
@@ -68,12 +86,28 @@ function Vehicles() {
         <TextInput label="Vehicle Type" required />
         <TextInput label="License Number" required></TextInput>
         <TextInput label="Model" required></TextInput>
-        <TextInput label="Insurance Status" required></TextInput>
+        <Select
+          label="Insurance Status"
+          placeholder="Select insurance status"
+          data={[
+            { value: "Active", label: "Active" },
+            { value: "Inactive", label: "Inactive" },
+          ]}
+          required
+        />
         
       </Flex>
       <Flex className="gap-20 mb-10">
         <TextInput label="VIN" required></TextInput>
-        <TextInput label="Status" required></TextInput>
+        <Select
+          label="Status"
+          placeholder="Select vehicle status"
+          data={[
+            { value: "Active", label: "Active" },
+            { value: "Inactive", label: "Inactive" },
+          ]}
+          required
+        />
       </Flex>
     
       
@@ -97,26 +131,28 @@ function Vehicles() {
         borderRadius="md"
         withTableBorder
         columns={[
-          { accessor: "company_name", title: "Company Name" },
-          { accessor: "operational_area", title: "Operational Area" },
-          { accessor: "fleet_size", title: "Fleet Size" },
+          { accessor: "vehicle_type", title: "Vehicle Type" },
+          { accessor: "license_plate", title: "License Plate" },
+          { accessor: "model", title: "Model" },
+          { accessor: "vin", title: "VIN" },
+          { accessor: "status", title: "Status" },
           {
-            accessor: "contact_person",
-            title: "Contact Person",
+            accessor: "owner_contact",
+            title: "Owner Contact",
             render: (records) => (
               <>
-                <Box>{records.contact_person.name}</Box>
+                <Box>{records.owner_contact.name}</Box>
               </>
             ),
           },
           {
-            accessor: "contact_phone_email",
-            title: "Contact Phone/Email",
+            accessor: "owner_phone_email",
+            title: "Owner Phone/Email",
             render: (records) => (
               <>
                 <Flex direction="column">
-                  <Box>{records.contact_person.email}</Box>
-                  <Box>{records.contact_person.phone_number}</Box>
+                  <Box>{records.owner_contact.email}</Box>
+                  <Box>{records.owner_contact.phone_number}</Box>
                 </Flex>
               </>
             ),
@@ -124,7 +160,7 @@ function Vehicles() {
 
           { accessor: "status" },
         ]}
-        records={companies}
+        records={vehicles}
       />
     </div>
   );
