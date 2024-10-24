@@ -1,11 +1,13 @@
-import React from "react";
+import { useState } from "react";
 import { DataTable } from "mantine-datatable";
 import { Box, Button, Select} from "@mantine/core";
-import { TextInput, Flex, NumberInput } from "@mantine/core";
+import { TextInput, Flex, NumberInput,Pagination} from "@mantine/core";
+import { IconEdit, IconTrash } from '@tabler/icons-react';
+
 import { DateInput } from "@mantine/dates";
 
 function Vehicles() {
-  const vehicles = [
+  const [vehicles, setVehicles] = useState([
     {
       id: "1",
       vehicle_type: "Truck",
@@ -32,60 +34,111 @@ function Vehicles() {
         phone_number: "+0987654321",
       },
     },
-    {
-      id: "3",
-      vehicle_type: "Sedan",
-      license_plate: "LMN9012",
-      model: "Toyota Camry",
-      vin: "4T1BF1FK0HU123456",
-      status: "Active",
-      owner_contact: {
-        name: "Alice Johnson",
-        email: "alice.johnson@example.com",
-        phone_number: "+1122334455",
-      },
-    },
-    {
-      id: "4",
-      vehicle_type: "SUV",
-      license_plate: "JKL3456",
-      model: "Honda CR-V",
-      vin: "5J6RW2H56FL123456",
-      status: "Active",
-      owner_contact: {
-        name: "Bob Brown",
-        email: "bob.brown@example.com",
-        phone_number: "+2233445566",
-      },
-    },
-    {
-      id: "5",
-      vehicle_type: "Motorcycle",
-      license_plate: "GHI7890",
-      model: "Harley-Davidson Sportster",
-      vin: "1HD1CZ316KC123456",
-      status: "Inactive",
-      owner_contact: {
-        name: "Charlie White",
-        email: "charlie.white@example.com",
-        phone_number: "+3344556677",
-      },
-    },
-  ];
-  
+  ]);
+  const [vehicleType, setVehicleType] = useState('');
+  const [licenseNumber, setLicenseNumber] = useState('');
+  const [model, setModel] = useState('');
+  const [vin, setVin] = useState('');
+  const [status, setStatus] = useState('');
+  const [insuranceStatus, setInsuranceStatus] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [activePage, setPage] = useState(1);
+  const [errors, setErrors] = useState({});
 
+  const [editingVehicleId, setEditingVehicleId] = useState(null);
+ 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!vehicleType) newErrors.vehicleType = 'Vehicle type is required';
+    if (!licenseNumber) newErrors.licenseNumber = 'License number is required';
+    if (!model) newErrors.model = 'Model is required';
+    if (!vin) newErrors.vin = 'VIN is required';
+    if (!status) newErrors.status = 'Status is required';
+    if (!insuranceStatus) newErrors.insuranceStatus = 'Insurance status is required';
+    const phonePattern = /^\+?[1-9]\d{1,14}$/;
+    if (!phoneNumber) {
+      newErrors.phoneNumber = 'Phone number is required';
+    } else if (!phonePattern.test(phoneNumber)) {
+      newErrors.phoneNumber = 'Invalid phone number format';
+    }    
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email) {
+    newErrors.email = 'Email is required';
+  } else if (!emailPattern.test(email)) {
+    newErrors.email = 'Invalid email format';
+  }
+    if (!address) newErrors.address = 'Address is required';
+
+    setErrors(newErrors);
+    console.log("Validation Errors: ", newErrors); 
+
+    // If there are no errors, return true
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      const newVehicle = {
+        id: (vehicles.length + 1).toString(),
+        vehicle_type: vehicleType,
+        license_plate: licenseNumber,
+        model: model,
+        vin: vin,
+        status: status,
+        owner_contact: {
+          name: email.split('@')[0], // Simplifying owner's name
+          email: email,
+          phone_number: phoneNumber,
+        },
+      };
+      setVehicles([...vehicles, newVehicle]); // Add new vehicle to the state
+      console.log('New vehicle added:', newVehicle);
+
+      // Clear form fields after submission
+      setVehicleType('');
+      setLicenseNumber('');
+      setModel('');
+      setVin('');
+      setStatus('');
+      setInsuranceStatus('');
+      setPhoneNumber('');
+      setEmail('');
+      setAddress('');
+    }
+  };
+
+
+  
   return (
     <div>
-      {/* <Flex className="mb-4">
-        <Button>New Driver</Button>
-      </Flex> */}
+      
 
       <h2>Vehicles Information</h2>
 
       <Flex className="gap-20 mb-10">
-        <TextInput label="Vehicle Type" required />
-        <TextInput label="License Number" required></TextInput>
-        <TextInput label="Model" required></TextInput>
+      <TextInput
+          label="Vehicle Type"
+          required
+          value={vehicleType}
+          onChange={(e) => setVehicleType(e.target.value)}
+          error={errors.vehicleType}
+        />
+        <TextInput
+          label="License Number"
+          required
+          value={licenseNumber}
+          onChange={(e) => setLicenseNumber(e.target.value)}
+          error={errors.licenseNumber}
+        />
+       <TextInput
+          label="Model"
+          required
+          value={model}
+          onChange={(e) => setModel(e.target.value)}
+          error={errors.model}
+        />
         <Select
           label="Insurance Status"
           placeholder="Select insurance status"
@@ -94,11 +147,20 @@ function Vehicles() {
             { value: "Inactive", label: "Inactive" },
           ]}
           required
+          value={insuranceStatus}
+          onChange={setInsuranceStatus}
+          error={errors.insuranceStatus}
         />
         
       </Flex>
       <Flex className="gap-20 mb-10">
-        <TextInput label="VIN" required></TextInput>
+      <TextInput
+          label="VIN"
+          required
+          value={vin}
+          onChange={(e) => setVin(e.target.value)}
+          error={errors.vin}
+        />
         <Select
           label="Status"
           placeholder="Select vehicle status"
@@ -107,21 +169,42 @@ function Vehicles() {
             { value: "Inactive", label: "Inactive" },
           ]}
           required
+          value={status}
+          onChange={setStatus}
+          error={errors.status}
         />
       </Flex>
     
       
       <h2>Owner Information</h2>
       <Flex className="gap-20">
-        <TextInput label="Phone Number" required />
-        <TextInput label="Email Address" required></TextInput>
-        <TextInput label="Address" required></TextInput>
+      <TextInput
+          label="Phone Number"
+          required
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          error={errors.phoneNumber}
+        />
+        <TextInput
+          label="Email Address"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={errors.email}
+        />
+        <TextInput
+          label="Address"
+          required
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          error={errors.address}
+        />
       </Flex>
       <Flex className="gap-10 mb-16 mt-10  ">
         <Button variant="filled" color="red">
           CANCEL
         </Button>
-        <Button variant="filled" color="teal">
+        <Button variant="filled" color="teal" onClick={handleSubmit}>
           SAVE
         </Button>
       </Flex>
@@ -158,12 +241,31 @@ function Vehicles() {
             ),
           },
 
+          {
+            accessor: "actions",
+            title: "Actions",
+            render: (vehicle) => (
+              <Flex>
+                <IconEdit
+                  style={{ cursor: 'pointer', marginRight: '10px' }}
+                  onClick={() => handleEdit(vehicle)}
+                />
+                <IconTrash
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleDelete(vehicle.id)}
+                />
+              </Flex>
+            ),
+          },
+
           { accessor: "status" },
         ]}
         records={vehicles}
       />
+      <Pagination value={activePage} onChange={setPage} total={10} className="float-right mt-10"/>
     </div>
   );
 }
 
 export default Vehicles;
+
