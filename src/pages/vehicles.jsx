@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DataTable } from "mantine-datatable";
 import { Box, Button, Select} from "@mantine/core";
 import { TextInput, Flex, NumberInput,Pagination} from "@mantine/core";
@@ -7,34 +7,11 @@ import { IconEdit, IconTrash, IconX, IconCheck } from '@tabler/icons-react';
 import { DateInput } from "@mantine/dates";
 
 function Vehicles() {
-  const [vehicles, setVehicles] = useState([
-    {
-      id: "1",
-      vehicle_type: "Truck",
-      license_plate: "ABC1234",
-      model: "Ford F-150",
-      vin: "1FTRX12W54NA12345",
-      status: "Active",
-      owner_contact: {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        phone_number: "+1234567890",
-      },
-    },
-    {
-      id: "2",
-      vehicle_type: "Van",
-      license_plate: "XYZ5678",
-      model: "Mercedes Sprinter",
-      vin: "WDB6312001B123456",
-      status: "Inactive",
-      owner_contact: {
-        name: "Jane Smith",
-        email: "jane.smith@example.com",
-        phone_number: "+0987654321",
-      },
-    },
-  ]);
+  const [vehicles, setVehicles] = useState(() => {
+    // Load vehicles from local storage if available
+    const storedVehicles = localStorage.getItem('vehicles');
+    return storedVehicles ? JSON.parse(storedVehicles) : [];
+  });
   const [vehicleType, setVehicleType] = useState('');
   const [licenseNumber, setLicenseNumber] = useState('');
   const [model, setModel] = useState('');
@@ -46,8 +23,12 @@ function Vehicles() {
   const [address, setAddress] = useState('');
   const [activePage, setPage] = useState(1);
   const [errors, setErrors] = useState({});
-
   const [editingVehicleId, setEditingVehicleId] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem('vehicles', JSON.stringify(vehicles));
+  }, [vehicles]);
+
  
   const validateForm = () => {
     const newErrors = {};
