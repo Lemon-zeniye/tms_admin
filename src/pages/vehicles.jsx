@@ -2,7 +2,8 @@ import { useState } from "react";
 import { DataTable } from "mantine-datatable";
 import { Box, Button, Select} from "@mantine/core";
 import { TextInput, Flex, NumberInput,Pagination} from "@mantine/core";
-import { GoogleMap, useLoadScript, Autocomplete } from "@react-google-maps/api";
+import { IconEdit, IconTrash } from '@tabler/icons-react';
+
 import { DateInput } from "@mantine/dates";
 
 function Vehicles() {
@@ -45,6 +46,8 @@ function Vehicles() {
   const [address, setAddress] = useState('');
   const [activePage, setPage] = useState(1);
   const [errors, setErrors] = useState({});
+
+  const [editingVehicleId, setEditingVehicleId] = useState(null);
  
   const validateForm = () => {
     const newErrors = {};
@@ -235,6 +238,23 @@ function Vehicles() {
                   <Box>{records.owner_contact.phone_number}</Box>
                 </Flex>
               </>
+            ),
+          },
+
+          {
+            accessor: "actions",
+            title: "Actions",
+            render: (vehicle) => (
+              <Flex>
+                <IconEdit
+                  style={{ cursor: 'pointer', marginRight: '10px' }}
+                  onClick={() => handleEdit(vehicle)}
+                />
+                <IconTrash
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleDelete(vehicle.id)}
+                />
+              </Flex>
             ),
           },
 
