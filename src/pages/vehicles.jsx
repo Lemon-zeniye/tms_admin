@@ -268,18 +268,20 @@ function Vehicles() {
             title: "Actions",
             render: (vehicle) => (
               <Flex>
+                {/* Edit icon with blue color */}
                 <IconEdit
-                  style={{ cursor: 'pointer', marginRight: '10px' }}
+                  style={{ cursor: 'pointer', marginRight: '10px', color: 'blue' }}
                   onClick={() => handleEdit(vehicle)}
                 />
+                
+                {/* Delete icon with red color */}
                 <IconTrash
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer', color: 'red' }}
                   onClick={() => handleDelete(vehicle.id)}
                 />
               </Flex>
             ),
-          },
-
+          }
           
         ]}
         records={vehicles}
