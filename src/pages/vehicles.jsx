@@ -1,39 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DataTable } from "mantine-datatable";
 import { Box, Button, Select} from "@mantine/core";
 import { TextInput, Flex, NumberInput,Pagination} from "@mantine/core";
-import { GoogleMap, useLoadScript, Autocomplete } from "@react-google-maps/api";
+import { IconEdit, IconTrash, IconX, IconCheck } from '@tabler/icons-react';
+
 import { DateInput } from "@mantine/dates";
 
 function Vehicles() {
-  const [vehicles, setVehicles] = useState([
-    {
-      id: "1",
-      vehicle_type: "Truck",
-      license_plate: "ABC1234",
-      model: "Ford F-150",
-      vin: "1FTRX12W54NA12345",
-      status: "Active",
-      owner_contact: {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        phone_number: "+1234567890",
-      },
-    },
-    {
-      id: "2",
-      vehicle_type: "Van",
-      license_plate: "XYZ5678",
-      model: "Mercedes Sprinter",
-      vin: "WDB6312001B123456",
-      status: "Inactive",
-      owner_contact: {
-        name: "Jane Smith",
-        email: "jane.smith@example.com",
-        phone_number: "+0987654321",
-      },
-    },
-  ]);
+  const [vehicles, setVehicles] = useState(() => {
+    // Load vehicles from local storage if available
+    const storedVehicles = localStorage.getItem('vehicles');
+    return storedVehicles ? JSON.parse(storedVehicles) : [];
+  });
   const [vehicleType, setVehicleType] = useState('');
   const [licenseNumber, setLicenseNumber] = useState('');
   const [model, setModel] = useState('');
@@ -45,6 +23,12 @@ function Vehicles() {
   const [address, setAddress] = useState('');
   const [activePage, setPage] = useState(1);
   const [errors, setErrors] = useState({});
+  const [editingVehicleId, setEditingVehicleId] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem('vehicles', JSON.stringify(vehicles));
+  }, [vehicles]);
+
  
   const validateForm = () => {
     const newErrors = {};
@@ -77,35 +61,74 @@ function Vehicles() {
 
   const handleSubmit = () => {
     if (validateForm()) {
-      const newVehicle = {
-        id: (vehicles.length + 1).toString(),
-        vehicle_type: vehicleType,
-        license_plate: licenseNumber,
-        model: model,
-        vin: vin,
-        status: status,
-        owner_contact: {
-          name: email.split('@')[0], // Simplifying owner's name
-          email: email,
-          phone_number: phoneNumber,
-        },
-      };
-      setVehicles([...vehicles, newVehicle]); // Add new vehicle to the state
-      console.log('New vehicle added:', newVehicle);
+      if (editingVehicleId) {
+        setVehicles((prevVehicles) =>
+          prevVehicles.map((vehicle) =>
+            vehicle.id === editingVehicleId
+              ? {
+                  ...vehicle,
+                  vehicle_type: vehicleType,
+                  license_plate: licenseNumber,
+                  model: model,
+                  vin: vin,
+                  status: status,
+                  owner_contact: {
+                    name: email.split('@')[0],
+                    email: email,
+                    phone_number: phoneNumber,
+                  },
+                }
+              : vehicle
+          )
+        );
+      } else {
+        const newVehicle = {
+          id: (vehicles.length + 1).toString(),
+          vehicle_type: vehicleType,
+          license_plate: licenseNumber,
+          model: model,
+          vin: vin,
+          status: status,
+          owner_contact: {
+            name: email.split('@')[0],
+            email: email,
+            phone_number: phoneNumber,
+          },
+        };
+        setVehicles([...vehicles, newVehicle]);
+      }
 
-      // Clear form fields after submission
-      setVehicleType('');
-      setLicenseNumber('');
-      setModel('');
-      setVin('');
-      setStatus('');
-      setInsuranceStatus('');
-      setPhoneNumber('');
-      setEmail('');
-      setAddress('');
+      clearForm();
     }
   };
 
+  const clearForm = () => {
+    setVehicleType('');
+    setLicenseNumber('');
+    setModel('');
+    setVin('');
+    setStatus('');
+    setInsuranceStatus('');
+    setPhoneNumber('');
+    setEmail('');
+    setAddress('');
+    setEditingVehicleId(null);
+  };
+  const handleEdit = (vehicle) => {
+    setVehicleType(vehicle.vehicle_type);
+    setLicenseNumber(vehicle.license_plate);
+    setModel(vehicle.model);
+    setVin(vehicle.vin);
+    setStatus(vehicle.status);
+    setInsuranceStatus('');
+    setPhoneNumber(vehicle.owner_contact.phone_number);
+    setEmail(vehicle.owner_contact.email);
+    setAddress('');
+    setEditingVehicleId(vehicle.id);
+  };
+  const handleDelete = (vehicleId) => {
+    setVehicles((prevVehicles) => prevVehicles.filter((vehicle) => vehicle.id !== vehicleId));
+  }
 
   
   return (
@@ -197,14 +220,16 @@ function Vehicles() {
           error={errors.address}
         />
       </Flex>
-      <Flex className="gap-10 mb-16 mt-10  ">
-        <Button variant="filled" color="red">
-          CANCEL
-        </Button>
-        <Button variant="filled" color="teal" onClick={handleSubmit}>
-          SAVE
-        </Button>
-      </Flex>
+      <Flex className="gap-10 mb-16 mt-10">
+  <Button variant="filled" color="red" onClick={clearForm}>
+    Cancel Vehicle {/* Updated label without icon */}
+  </Button>
+  <Button variant="filled" color="teal" onClick={handleSubmit}>
+    {editingVehicleId ? 'Update Vehicle' : 'Save Vehicle'} {/* Updated label with context */}
+  </Button>
+</Flex>
+
+
 
       <DataTable
         shadow="lg"
@@ -238,7 +263,24 @@ function Vehicles() {
             ),
           },
 
-          { accessor: "status" },
+          {
+            accessor: "actions",
+            title: "Actions",
+            render: (vehicle) => (
+              <Flex>
+                <IconEdit
+                  style={{ cursor: 'pointer', marginRight: '10px' }}
+                  onClick={() => handleEdit(vehicle)}
+                />
+                <IconTrash
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleDelete(vehicle.id)}
+                />
+              </Flex>
+            ),
+          },
+
+          
         ]}
         records={vehicles}
       />
