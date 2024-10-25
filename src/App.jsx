@@ -18,7 +18,6 @@ import Driver from "./pages/Driver";
 import Vehicles from "./pages/Vehicles";
 import AddTransporter from "./pages/AddTransporter";
 
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -35,7 +34,6 @@ const router = createBrowserRouter(
         <Route path="/login" element={<LoginPage />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
-      
     </>,
   ),
 );
