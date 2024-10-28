@@ -127,7 +127,11 @@ function Vehicles() {
     setEditingVehicleId(vehicle.id);
   };
   const handleDelete = (vehicleId) => {
-    setVehicles((prevVehicles) => prevVehicles.filter((vehicle) => vehicle.id !== vehicleId));
+    const confirmDelete = window.confirm("Are you sure you want to delete this vehicle?");
+
+    if (confirmDelete) {
+      setVehicles((prevVehicles) => prevVehicles.filter((vehicle) => vehicle.id !== vehicleId));
+    }
   }
 
   
@@ -268,13 +272,13 @@ function Vehicles() {
             title: "Actions",
             render: (vehicle) => (
               <Flex>
-                {/* Edit icon with blue color */}
+               
                 <IconEdit
                   style={{ cursor: 'pointer', marginRight: '10px', color: 'blue' }}
                   onClick={() => handleEdit(vehicle)}
                 />
                 
-                {/* Delete icon with red color */}
+                
                 <IconTrash
                   style={{ cursor: 'pointer', color: 'red' }}
                   onClick={() => handleDelete(vehicle.id)}
