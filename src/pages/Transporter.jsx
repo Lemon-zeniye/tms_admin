@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import { DataTable } from "mantine-datatable";
-import { Box, Button, Flex, Pagination } from "@mantine/core";
+import { Box, Button, Flex, Pagination, Group } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 
 function Transporter() {
@@ -40,67 +40,17 @@ function Transporter() {
   //     },
   //     status: "Inactive",
   //   },
-  //   {
-  //     id: "3",
-  //     company_name: "Logistics Solutions",
-  //     operational_area: "Europe",
-  //     fleet_size: 200,
-  //     contact_person: {
-  //       name: "Jane Smith",
-  //       email: "jane.smith@example.com",
-  //       phone_number: "+9876543210",
-  //     },
-  //     status: "Inactive",
-  //   },
-  //   {
-  //     id: "4",
-  //     company_name: "Logistics Solutions",
-  //     operational_area: "Europe",
-  //     fleet_size: 10,
-  //     contact_person: {
-  //       name: "Jane Smith",
-  //       email: "jane.smith@example.com",
-  //       phone_number: "+9876543210",
-  //     },
-  //     status: "Inactive",
-  //   },
-  //   {
-  //     id: "5",
-  //     company_name: "Logistics Solutions",
-  //     operational_area: "Europe",
-  //     fleet_size: 10,
-  //     contact_person: {
-  //       name: "Jane Smith",
-  //       email: "jane.smith@example.com",
-  //       phone_number: "+9876543210",
-  //     },
-  //     status: "Inactive",
-  //   },
-  //   {
-  //     id: "6",
-  //     company_name: "Logistics Solutions",
-  //     operational_area: "Europe",
-  //     fleet_size: 10,
-  //     contact_person: {
-  //       name: "Jane Smith",
-  //       email: "jane.smith@example.com",
-  //       phone_number: "+9876543210",
-  //     },
-  //     status: "Inactive",
-  //   },
-  //   {
-  //     id: "7",
-  //     company_name: "Logistics Solutions",
-  //     operational_area: "Europe",
-  //     fleet_size: 10,
-  //     contact_person: {
-  //       name: "Jane Smith",
-  //       email: "jane.smith@example.com",
-  //       phone_number: "+9876543210",
-  //     },
-  //     status: "Inactive",
-  //   },
-  // ];
+
+  const handleDelete = (id) => {
+    tableData((prevData) => prevData.filter((row) => row.id !== id));
+  };
+
+  const handleEdit = (row) => {
+    setEditRow(row);
+    setNewName(row.name);
+    setNewAge(row.age);
+    setIsModalOpen(true);
+  };
 
   const [activePage, setPage] = useState(1);
 
@@ -119,7 +69,32 @@ function Transporter() {
           { accessor: "fleetSize", title: "Fleet Size" },
           { accessor: "contactPersonName", title: "Contact Name" },
           { accessor: "contactPersonEmail", title: "Contact Email" },
-          // { accessor: "status" },
+          {
+            accessor: "actions",
+            title: "Actions",
+            render: (row) => (
+              <Group spacing="xs">
+                {/* Edit Button */}
+                <Button
+                  size="xs"
+                  variant="outline"
+                  onClick={() => handleEdit(row)}
+                >
+                  Edit
+                </Button>
+
+                {/* Delete Button */}
+                <Button
+                  size="xs"
+                  variant="outline"
+                  color="red"
+                  onClick={() => handleDelete(row.id)}
+                >
+                  Delete
+                </Button>
+              </Group>
+            ),
+          },
         ]}
         records={tableData}
       />
